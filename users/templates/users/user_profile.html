@@ -1,0 +1,32 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">User Profile</h1>
+
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-4 text-center">
+                {% if request.user.userprofile.profile_picture and request.user.userprofile.profile_picture.url %}
+                    <img src="{{ request.user.userprofile.profile_picture.url }}" alt="{{ user.username }}" class="user-profile-image img-fluid rounded-circle border border-primary shadow-lg" style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                 {% else %}
+                    <img src="{% static 'picture_defaut/defaut.png' %}" alt="{{ user.username }}" class="user-profile-image img-fluid rounded-circle border border-primary shadow-lg" style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item border-bottom border-primary"><strong>Username:</strong> {{ user.username }}</li>
+                    <li class="list-group-item border-bottom border-primary"><strong>Email:</strong> {{ user.email }}</li>
+                    {% if user_profile.bio %}
+                        <li class="list-group-item"><strong>Bio:</strong> {{ user_profile.bio }}</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-4 text-center">
+            <a href="{% url 'update_username' %}" class="btn btn-primary me-2">Update Username</a>
+            <a href="{% url 'update_profile_picture' %}" class="btn btn-primary">Update Profile Picture</a>
+        </div>
+    </div>
+{% endblock %}

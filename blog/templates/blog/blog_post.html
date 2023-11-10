@@ -1,0 +1,100 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <a class="btn btn-outline-secondary mb-3" href="{% url 'index' %}">Go Back</a>
+            {% if request.user.username == object.author.username %}
+            <a class="btn btn-outline-secondary mb-3" href="{% url 'delete_article' object.pk %}">Delete this post</a>
+            {% endif %}
+
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title">{{ object.title }}</h1>
+                    <p class="text-muted small">Posted by {{ object.author.username }} on {{ object.date }}</p>
+
+                    {% if object.image %}
+                        <img src="{{ object.image.url }}" alt="{{ object.title }}" class="img-fluid mb-3" style="max-width: 100%; height: auto;">
+                    {% endif %}
+
+                    <div class="mt-4">
+                        {{ object.content|safe }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <div class="user-profile">
+                    {% if object.author.userprofile.profile_picture %}
+                        <img src="{{ object.author.userprofile.profile_picture.url }}" alt="{{ object.author.username }}" class="user-profile-image img-fluid rounded-circle" style="max-width: 30px; max-height: 30px;">
+                    {% endif %}
+                    <span class="text-muted small">{{ object.author.username }}</span>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <p class="small">
+                    {% if object.likes.count == 1 %}
+                        {{ object.likes.count }} person likes this post
+                    {% else %}
+                        {{ object.likes.count }} people like this post
+                    {% endif %}
+                </p>
+                {% if request.user.is_authenticated %}
+                    {% if liked_by_user %}
+                        <form method="POST" action="{% url 'like_article' object.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-outline-secondary mb-3">
+                                <i class="bi bi-heart-fill"></i> Unlike this post
+                            </button>
+                        </form>
+                    {% else %}
+                        <form method="POST" action="{% url 'like_article' object.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-primary">
+                                <i class="bi bi-heart"></i> Like this post
+                            </button>
+                        </form>
+                    {% endif %}
+                {% else %}
+                    <p class="small">Please <a href="{% url 'login' %}">login</a> to like this post.</p>
+                {% endif %}
+            </div>
+
+            <div class="mt-4">
+                <h2>Comments</h2>
+                {% for comment in object.comment_set.all %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="user-profile">
+                                {% if comment.author.userprofile.profile_picture %}
+                                    <img src="{{ comment.author.userprofile.profile_picture.url }}" alt="{{ comment.author.username }}" class="user-profile-image img-fluid rounded-circle" style="max-width: 20px; max-height: 20px;">
+                                {% else %}
+                                <img src="{% static 'picture_defaut/defaut.png' %}" alt="{{ comment.author.username }}" class="user-profile-image img-fluid rounded-circle" style="max-width: 20px; max-height: 20px;">
+                                {% endif %}
+                                <span class="text-muted small">{{ comment.author.username }} said:</span>
+                            </div>
+                            <p class="card-text">{{ comment.content }}</p>
+                            <p class="text-muted small">Posted on {{ comment.created_date }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% if request.user.is_authenticated %}
+                    <div class="comment-form mt-4">
+                        <h3>Add a Comment</h3>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ comment_form.as_p }}
+                            <button class="btn btn-primary" type="submit"><ion-icon name="prism-outline"></ion-icon></button>
+                        </form>
+                    </div>
+                {% else %}
+                    <p class="small">Please <a href="{% url 'login' %}">login</a> to post comments.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

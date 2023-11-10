@@ -1,0 +1,71 @@
+<!-- index.html -->
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <div class="container my-5">
+        <div class="row mb-4">
+            <div class="col-md-6 col-12 mx-md-auto text-center">
+                <h1 class="display-4 fw-bolder">Welcome to Diskus</h1>
+                <p class="lead text-muted">A place to share your thoughts</p>
+                <a href="{% url 'create_article' %}" class="btn btn-primary btn-lg">Create New Article</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Add a category filter form -->
+            <form method="get" class="mb-3">
+                {{ category_filter_form.as_p }}
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </form>
+
+            {% for object in object_list %}
+                <div class="col-md-6 col-12 my-4">
+                    <div class="card">
+                        {% if object.image.url %}
+                            <img src="{{ object.image.url }}" alt="{{ object.title }}" class="card-img-top"style="max-width: 100%; height: auto;">
+                        {% endif %}
+                        <div class="card-body">
+                            <h3 class="card-title fw-bold">{{ object.title }}</h3>
+                            <p class="card-text text-muted">Posted by {{ object.author.username }}</p>
+                            <p class="card-text text-muted">
+                                {% if object.likes.count == 1 %}
+                                    {{ object.likes.count }} person likes this post
+                                {% else %}
+                                    {{ object.likes.count }} people like this post
+                                {% endif %}
+                            </p>
+                            <p class="card-text">{{ object.content|truncatewords_html:50|safe }}</p>
+                            <a href="{% url 'detail_article' object.id %}" class="btn btn-primary">Read more</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <nav>
+            <ul class="pagination mt-5">
+                <div class="mx-auto d-flex flex-row">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">&laquo; First</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                        </li>
+                    {% endif %}
+                    <li class="page-item">
+                        <a class="page-link" href="#">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</a>
+                    </li>
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                        </li>
+                    {% endif %}
+                </div>
+            </ul>
+        </nav>
+    </div>
+{% endblock content %}

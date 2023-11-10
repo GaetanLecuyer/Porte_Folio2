@@ -1,0 +1,33 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <div class="container my-5">
+        <h1 class="display-4 fw-bolder">Search Results</h1>
+        <p class="lead text-muted">Showing search results for: "{{ request.GET.q }}"</p>
+
+        <div class="row">
+            {% for article in articles %}
+                <div class="col-md-6 col-12 my-4">
+                    <div class="card">
+                        {% if article.image.url %}
+                            <img src="{{ article.image.url }}" alt="{{ article.title }}" class="card-img-top" style="max-width: 100%; height: auto;">
+                        {% endif %}
+                        <div class="card-body">
+                            <h3 class="card-title fw-bold">{{ article.title }}</h3>
+                            <p class="card-text text-muted">Posted by {{ article.author.username }}</p>
+                            <p class="card-text text-muted">
+                                {% if article.likes.count == 1 %}
+                                    {{ article.likes.count }} person likes this post
+                                {% else %}
+                                    {{ article.likes.count }} people like this post
+                                {% endif %}
+                            </p>
+                            <p class="card-text">{{ article.content|truncatewords_html:50|safe }}</p>
+                            <a href="{% url 'detail_article' article.id %}" class="btn btn-primary">Read more</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
