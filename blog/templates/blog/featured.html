@@ -1,62 +1,110 @@
-{% extends 'blog/base.html' %}
-
-{% block content %}
+{% extends 'blog/base.html' %} {% block content %}
+<!-- Main Container -->
 <div class="container mt-5">
-    <div class="text-center">
-        <h1 style="font-weight: bold; font-size: 2rem;">Featured Posts</h1>
-        <p class="text-muted">Explore our featured articles</p>
-    </div>
+  <!-- Featured Posts Heading -->
+  <div class="text-center">
+    <h1 style="font-weight: bold; font-size: 2rem">Featured Posts</h1>
+    <p class="text-muted">Explore our featured articles</p>
+  </div>
 
-    <div class="row mt-3">
-        {% for object in object_list %}
-        <div class="col-md-6 mb-4">
-            <div class="card" style="border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
-                <img src="{{ object.image.url }}" alt="{{ object.title }}" class="card-img-top" style="max-height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h3 style="font-weight: bold;" class="card-title">{{ object.title }}</h3>
-                    <p class="card-text text-muted small">{{ object.date }}</p>
-                    <p class="card-text text-muted small">Posted by {{ object.author.username }}</p>
-                    <p class="card-text text-muted small">
-                        {% if object.likes.count == 1 %}
-                        {{ object.likes.count }} person likes this post
-                        {% else %}
-                        {{ object.likes.count }} people like this post
-                        {% endif %}
-                    </p>
-                    <p class="card-text" style="font-size: 1rem;">{{ object.content|truncatewords_html:50|safe }}</p>
-                    <a href="{% url 'detail_article' object.id %}" class="btn btn-primary" style="background-color: #bad9f9; border: none;">Read more</a>
-                </div>
-            </div>
+  <!-- Featured Posts Section -->
+  <div class="row mt-3">
+    {% for object in object_list %}
+    <!-- Individual Post Card -->
+    <div class="col-md-6 mb-4">
+      <div
+        class="card"
+        style="
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        "
+      >
+        <!-- Post Image -->
+        <img
+          src="{{ object.image.url }}"
+          alt="{{ object.title }}"
+          class="card-img-top"
+          style="max-height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <!-- Post Title -->
+          <h3 style="font-weight: bold" class="card-title">
+            {{ object.title }}
+          </h3>
+          <!-- Post Date and Author -->
+          <p class="card-text text-muted small">{{ object.date }}</p>
+          <p class="card-text text-muted small">
+            Posted by {{ object.author.username }}
+          </p>
+          <!-- Likes Count -->
+          <p class="card-text text-muted small">
+            {% if object.likes.count == 1 %} {{ object.likes.count }} person
+            likes this post {% else %} {{ object.likes.count }} people like this
+            post {% endif %}
+          </p>
+          <!-- Post Content -->
+          <p class="card-text" style="font-size: 1rem">
+            {{ object.content|truncatewords_html:50|safe }}
+          </p>
+          <!-- Read More Button -->
+          <a
+            href="{% url 'detail_article' object.id %}"
+            class="btn btn-primary"
+            style="background-color: #bad9f9; border: none"
+            >Read more</a
+          >
         </div>
-        {% endfor %}
+      </div>
     </div>
+    {% endfor %}
+  </div>
 
-    <div class="row mt-4 justify-content-center">
-        <nav>
-            <ul style="list-style: none; display: flex;" class="pagination">
-                {% if page_obj.has_previous %}
-                <li style="margin-right: 10px;">
-                    <a href="?page=1" style="text-decoration: none; color: #007bff;">&laquo; First</a>
-                </li>
-                <li style="margin-right: 10px;">
-                    <a href="?page={{ page_obj.previous_page_number }}" style="text-decoration: none; color: #007bff;">Previous</a>
-                </li>
-                {% endif %}
+  <!-- Pagination Section -->
+  <div class="row mt-4 justify-content-center">
+    <nav>
+      <ul style="list-style: none; display: flex" class="pagination">
+        <!-- Previous Page Links -->
+        {% if page_obj.has_previous %}
+        <li style="margin-right: 10px">
+          <a href="?page=1" style="text-decoration: none; color: #007bff"
+            >&laquo; First</a
+          >
+        </li>
+        <li style="margin-right: 10px">
+          <a
+            href="?page={{ page_obj.previous_page_number }}"
+            style="text-decoration: none; color: #007bff"
+            >Previous</a
+          >
+        </li>
+        {% endif %}
 
-                <li style="margin-right: 10px; font-size: 1rem;">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </li>
+        <!-- Current Page Information -->
+        <li style="margin-right: 10px; font-size: 1rem">
+          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </li>
 
-                {% if page_obj.has_next %}
-                <li style="margin-right: 10px;">
-                    <a href="?page={{ page_obj.next_page_number }}" style="text-decoration: none; color: #007bff;">Next</a>
-                </li>
-                <li>
-                    <a href="?page={{ page_obj.paginator.num_pages }}" style="text-decoration: none; color: #007bff;">Last &raquo;</a>
-                </li>
-                {% endif %}
-            </ul>
-        </nav>
-    </div>
+        <!-- Next Page Links -->
+        {% if page_obj.has_next %}
+        <li style="margin-right: 10px">
+          <a
+            href="?page={{ page_obj.next_page_number }}"
+            style="text-decoration: none; color: #007bff"
+            >Next</a
+          >
+        </li>
+        <li>
+          <a
+            href="?page={{ page_obj.paginator.num_pages }}"
+            style="text-decoration: none; color: #007bff"
+            >Last &raquo;</a
+          >
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
 </div>
+<!-- End of Main Container -->
 {% endblock %}

@@ -1,43 +1,139 @@
 <!-- create_article.html -->
-{% extends 'blog/base.html' %}
 
-{% block content %}
+{% extends 'blog/base.html' %} {% block content %}
 <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card border-0" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(244, 244, 244, 0.2);">
-                <div class="card-body">
-                    <h2 class="card-title fw-bold text-center mb-4" style="font-size: 1.5rem; color: #007bff;"><ion-icon name="document-text-outline"></ion-icon></h2>
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="{{ form.title.id_for_label }}" class="form-label fw-bold" style="color: #007bff;">Title</label>
-                            <input type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}" class="form-control" value="{{ form.title.value }}" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="{{ form.image.id_for_label }}" class="form-label fw-bold" style="color: #007bff;"><ion-icon name="image-outline"></ion-icon></label>
-                            <input type="file" name="{{ form.image.name }}" id="{{ form.image.id_for_label }}" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="{{ form.content.id_for_label }}" class="form-label fw-bold" style="color: #007bff;">Article Content</label>
-                            <textarea name="{{ form.content.name }}" id="{{ form.content.id_for_label }}" class="form-control" rows="6" required>{{ form.content.value }}</textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="{{ form.category.id_for_label }}" class="form-label fw-bold" style="color: #007bff;">Category</label>
-                            {{ form.category }}
-                        </div>
-                        <div class="form-check mb-4">
-                            <input type="checkbox" name="{{ form.featured.name }}" id="{{ form.featured.id_for_label }}" class="form-check-input" {% if form.featured.value %}checked{% endif %}>
-                            <label class="form-check-label fw-bold" for="{{ form.featured.id_for_label }}" style="color: #007bff;">Featured Article</label>
-                        </div>
-                        <div class="text-center">
-                            <button class="btn btn-primary" type="submit" style="background-color: #b1cff0; border: none;"><ion-icon name="paper-plane-outline"></ion-icon></button>
-                        </div>
-                    </form>
-                </div>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <!-- Card for Article Creation -->
+      <div
+        class="card border-0"
+        style="
+          border-radius: 10px;
+          box-shadow: 0 4px 8px 0 rgba(244, 244, 244, 0.2);
+        "
+      >
+        <div class="card-body">
+          <!-- Title Section -->
+          <h2
+            class="card-title fw-bold text-center mb-4"
+            style="font-size: 1.5rem; color: #007bff"
+          >
+            <ion-icon name="document-text-outline"></ion-icon>
+          </h2>
+
+          <!-- Article Creation Form -->
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Title Input -->
+            <div class="mb-3">
+              <label
+                for="{{ form.title.id_for_label }}"
+                class="form-label fw-bold"
+                style="color: #007bff"
+                >Title</label
+              >
+              <input
+                type="text"
+                name="{{ form.title.name }}"
+                id="{{ form.title.id_for_label }}"
+                class="form-control"
+                value="{{ form.title.value }}"
+                required
+              />
             </div>
-            <a class="btn btn-secondary mt-3 d-block mx-auto" href="{% url 'index' %}" style="background-color: #ffffff; border: none; color: #006aff;"><ion-icon name="return-down-back-outline"></ion-icon></a>
+
+            <!-- Image Upload Input -->
+            <div class="mb-3">
+              <label
+                for="{{ form.image.id_for_label }}"
+                class="form-label fw-bold"
+                style="color: #007bff"
+                ><ion-icon name="image-outline"></ion-icon
+              ></label>
+              <input
+                type="file"
+                name="{{ form.image.name }}"
+                id="{{ form.image.id_for_label }}"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <!-- Article Content Textarea -->
+            <div class="mb-3">
+              <label
+                for="{{ form.content.id_for_label }}"
+                class="form-label fw-bold"
+                style="color: #007bff"
+                >Article Content</label
+              >
+              <textarea
+                name="{{ form.content.name }}"
+                id="{{ form.content.id_for_label }}"
+                class="form-control"
+                rows="6"
+                required
+              >
+{{ form.content.value }}</textarea
+              >
+            </div>
+
+            <!-- Category Selection -->
+            <div class="mb-3">
+              <label
+                for="{{ form.category.id_for_label }}"
+                class="form-label fw-bold"
+                style="color: #007bff"
+                >Category</label
+              >
+              {{ form.category }}
+            </div>
+
+            <!-- Featured Article Checkbox -->
+            <div class="form-check mb-4">
+              <input
+                type="checkbox"
+                name="{{ form.featured.name }}"
+                id="{{ form.featured.id_for_label }}"
+                class="form-check-input"
+                {%
+                if
+                form.featured.value
+                %}checked{%
+                endif
+                %}
+              />
+              <label
+                class="form-check-label fw-bold"
+                for="{{ form.featured.id_for_label }}"
+                style="color: #007bff"
+                >Featured Article</label
+              >
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+              <button
+                class="btn btn-primary"
+                type="submit"
+                style="background-color: #b1cff0; border: none"
+              >
+                <ion-icon name="paper-plane-outline"></ion-icon>
+              </button>
+            </div>
+          </form>
         </div>
+      </div>
+
+      <!-- Return Button -->
+      <a
+        class="btn btn-secondary mt-3 d-block mx-auto"
+        href="{% url 'index' %}"
+        style="background-color: #ffffff; border: none; color: #006aff"
+        ><ion-icon name="return-down-back-outline"></ion-icon
+      ></a>
     </div>
+  </div>
 </div>
 {% endblock %}

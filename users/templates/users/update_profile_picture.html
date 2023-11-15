@@ -1,16 +1,30 @@
-{% extends 'blog/base.html' %}
-
-{% block content %}
-    <div class="container mt-5">
-        <h1>Update Profile Picture</h1>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="{{ form.profile_picture.id_for_label }}" class="form-label fw-bold" style="color: #007bff;"><ion-icon name="image-outline"></ion-icon></label>
-                {{ form.profile_picture }}
-                <input type="file" name="{{ form.profile_picture.name }}" id="{{ form.profile_picture.id_for_label }}" class="form-control" accept="image/*">
-            </div>
-            <button tpe="submit" class="btn btn-primary">Update</button>
-        </form>
+{% extends 'blog/base.html' %} {% block content %}
+<!-- Update Profile Picture Form -->
+<div class="container mt-5">
+  <h1>Update Profile Picture</h1>
+  <!-- Form for Updating Profile Picture with CSRF Token and enctype for file upload -->
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+      <!-- Label and Input for Profile Picture -->
+      <label
+        for="{{ form.profile_picture.id_for_label }}"
+        class="form-label fw-bold"
+        style="color: #007bff"
+        ><ion-icon name="image-outline"></ion-icon
+      ></label>
+      {{ form.profile_picture }}
+      <!-- File Input for Profile Picture -->
+      <input
+        type="file"
+        name="{{ form.profile_picture.name }}"
+        id="{{ form.profile_picture.id_for_label }}"
+        class="form-control"
+        accept="image/*"
+      />
     </div>
+    <!-- Update Button -->
+    <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+</div>
 {% endblock %}

@@ -1,12 +1,14 @@
-{% extends 'blog/base.html' %}
-
-{% block content %}
-    <div class="container mt-5">
-        <h1>Update Username and Profile Picture</h1>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Update</button>
-        </form>
-    </div>
+{% extends 'blog/base.html' %} {% block content %}
+<!-- Update Username and Profile Picture Form -->
+<div class="container mt-5">
+  <h1>Update Username and Profile Picture</h1>
+  <!-- Form for Updating Username and Profile Picture with CSRF Token and enctype for file upload -->
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <!-- Render form fields as paragraphs -->
+    {{ form.as_p }}
+    <!-- Update Button -->
+    <button type="submit">Update</button>
+  </form>
+</div>
 {% endblock %}
